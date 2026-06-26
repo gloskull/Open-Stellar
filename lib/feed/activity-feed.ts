@@ -197,7 +197,7 @@ export function feedDistrictName(districtId?: DistrictId) {
 }
 
 export function feedEventFromSystemEvent(event: PublishedSystemEvent): FeedEvent {
-  const agent = findAgentByLookup(event.agentId)
+  const agent = event.agentId ? findAgentByLookup(event.agentId) : null
   const district = agent ? getAgentDistrict(agent) : undefined
   const base = {
     id: event.id,
@@ -255,12 +255,47 @@ export function feedEventFromSystemEvent(event: PublishedSystemEvent): FeedEvent
     }
   }
 
+  if (event.type === "district.unlocked") {
+    const districtId = event.districtId ?? event.district?.id
+    const districtName = event.district?.name ?? districtId ?? "a district"
+    return {
+      ...base,
+      kind: "district",
+      title: `District unlocked: ${districtName}`,
+      detail: `New territory accessible for agents`,
+      highlight: "District unlocked",
+      shareText: `District ${districtName} unlocked on Open Stellar`,
+    }
+  }
+
+  if (event.type === "task.started") {
+    return {
+      ...base,
+      kind: "task",
+      title: `${base.agentName} started a task`,
+      detail: event.task.title,
+      highlight: "Task started",
+      shareText: `${base.agentName} started a task on Open Stellar`,
+    }
+  }
+
+  if (event.type === "agent.status") {
+    return {
+      ...base,
+      kind: "task",
+      title: `${base.agentName} status update`,
+      detail: `Status changed to ${event.status}`,
+      highlight: "Status change",
+      shareText: `${base.agentName} status changed to ${event.status} on Open Stellar`,
+    }
+  }
+
   return {
     ...base,
     kind: "task",
     title: `${base.agentName} activity update`,
-    detail: event.type === "task.started" ? event.task.title : `Status changed to ${event.status}`,
-    highlight: event.type,
+    detail: "System activity recorded",
+    highlight: (event as PublishedSystemEvent).type,
     shareText: `${base.agentName} activity update on Open Stellar`,
   }
 }
