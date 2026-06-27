@@ -43,6 +43,9 @@ jobs:
       - name: Secret scan
         run: npm run secretlint -- --format=github
 
+      - name: Lint
+        run: npm run lint
+
       - name: Build
         run: npm run build
 
