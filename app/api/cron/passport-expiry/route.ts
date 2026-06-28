@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
-import { runPassportExpiryCheck } from "@/lib/passport/passport-store"
+import { runPassportExpiryCheck, listPassportExpiryEvents } from "@/lib/passport/passport-store"
 import { createApiRouteLogger } from "@/lib/api-logging"
+
 import { isCronAuthorized } from "@/lib/auth"
 
 export async function GET(req: Request) {

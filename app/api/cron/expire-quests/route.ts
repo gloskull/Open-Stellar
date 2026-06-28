@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { runQuestExpiryCheck } from "@/lib/gamification/quest-store"
 import { createApiRouteLogger } from "@/lib/api-logging"
+
 import { isCronAuthorized } from "@/lib/auth"
 
 export async function GET(req: Request) {

@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server"
 import { processDueWebhookRetries } from "@/lib/webhooks/delivery"
-import { isCronAuthorized } from "@/lib/auth"
 
 export const dynamic = "force-dynamic"
 export const runtime = "nodejs"
+
+import { isCronAuthorized } from "@/lib/auth"
 
 export async function POST(req: Request) {
   if (!isCronAuthorized(req)) {

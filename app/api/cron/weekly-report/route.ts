@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createUnsubscribeUrl, emails, getEmailPreferences } from "@/lib/email/resend"
+
 import { isCronAuthorized } from "@/lib/auth"
 
 function operatorEmails(): string[] {
